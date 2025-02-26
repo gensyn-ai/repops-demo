@@ -4,10 +4,30 @@ from transformers import AutoModelForCausalLM
 from repop.utils import set_determinism, get_hash, hash_tensors
 from repop.rand import stable_randn
 import warnings
+import subprocess
 
 EXPECTED_OUTPUT_HASH = (
     "04c6980d863a3ccf2ef12e182a9dfe388533157c697687f8e8f0e8640080018c"
 )
+
+def check_nvidia():
+    """
+    Check if an NVIDIA GPU is available by attempting to run `nvidia-smi`.
+    
+    Returns:
+        (bool, str): A tuple where the first element is True if NVIDIA is available,
+                     and the second element is the output or error message.
+    """
+    try:
+        # Run nvidia-smi and capture its output
+        output = subprocess.check_output(["nvidia-smi"], stderr=subprocess.STDOUT)
+        return True, output.decode("utf-8")
+    except subprocess.CalledProcessError as e:
+        # nvidia-smi was found but returned an error
+        return False, f"Command error: {e.output.decode('utf-8')}"
+    except FileNotFoundError:
+        # nvidia-smi command is not found
+        return False, "nvidia-smi command not found. NVIDIA GPU might not be installed."
 
 
 def get_learnable_parameters(model: torch.nn.Module) -> set[str]:
@@ -22,7 +42,7 @@ def get_learnable_parameters(model: torch.nn.Module) -> set[str]:
     return learnable_parameters
 
 
-def run_reproducible_demonstration(model: torch.nn.Module):
+def run_reproducible_demonstration(model: torch.nn.Module, devices: list[str]):
     # step 1: export the model to onnx
     shape = (2, 8)
     vocab_size = model.config.vocab_size
@@ -75,17 +95,22 @@ def run_reproducible_demonstration(model: torch.nn.Module):
     data_hash = hash_tensors(dummy_data)
     print(f"\033[1;37m{data_hash}\033[0m")
 
-    repop_output = repop_model(*dummy_data)
-    print("\033[35mRepop Inference Output Hash:\033[0m")
-    repop_output_hash = get_hash(repop_output)
-    print(f"\033[1;37m{repop_output_hash}\033[0m")
 
-    print("\033[35mExpected Inference Output Hash:\033[0m")
-    print(f"\033[1;37m{EXPECTED_OUTPUT_HASH}\033[0m")
+    for device in devices:
+        repop_model = repop_model.to(device)
+        dummy_data = [d.to(device) for d in dummy_data]
+        print(f"Running Repops Model for device = {device} ... ")
+        repop_output = repop_model(*dummy_data)
+        print("\033[35mRepop Inference Output Hash:\033[0m")
+        repop_output_hash = get_hash(repop_output)
+        print(f"\033[1;37m{repop_output_hash}\033[0m")
 
-    if repop_output_hash == EXPECTED_OUTPUT_HASH:
-        print("\033[32mBitwise output match - success!\033[0m")
+        print("\033[35mExpected Inference Output Hash:\033[0m")
+        print(f"\033[1;37m{EXPECTED_OUTPUT_HASH}\033[0m")
 
+        if repop_output_hash == EXPECTED_OUTPUT_HASH:
+            print("\033[32mBitwise output match - success!\033[0m")
+            
 
 if __name__ == "__main__":
     # initialized weights are random (for pretrained: just the classifier layers)
@@ -103,5 +128,5 @@ if __name__ == "__main__":
         stable_randn((model.lm_head.out_features, model.lm_head.in_features), False)
     )
     set_determinism(42)
-
-    run_reproducible_demonstration(model=model)
+    devices = ['cpu', 'cuda:0'] if check_nvidia() else ['cpu']
+    run_reproducible_demonstration(model=model, devices=devices)
