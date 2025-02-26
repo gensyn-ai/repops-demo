@@ -9,6 +9,7 @@ EXPECTED_OUTPUT_HASH = (
     "04c6980d863a3ccf2ef12e182a9dfe388533157c697687f8e8f0e8640080018c"
 )
 
+
 def get_learnable_parameters(model: torch.nn.Module) -> set[str]:
     """
     Given a torch module, we return a set that contains the names of all trainable model parameters,
@@ -55,7 +56,7 @@ def run_reproducible_demonstration(model: torch.nn.Module, devices: list[str]):
             training=torch.onnx.TrainingMode.TRAINING,
         )
 
-    print(f"Converting ONNX model to reproducible version...")
+    print("Converting ONNX model to reproducible version...")
     # step 2: deserialize the onnx model into a reproducible version
     repop_model = gensyn_onnx2torch.convert(
         exported,
@@ -73,7 +74,6 @@ def run_reproducible_demonstration(model: torch.nn.Module, devices: list[str]):
     print("\033[35mInput Data Hash:\033[0m")
     data_hash = hash_tensors(dummy_data)
     print(f"\033[1;37m{data_hash}\033[0m")
-
 
     for device in devices:
         repop_model = repop_model.to(device)
@@ -107,5 +107,5 @@ if __name__ == "__main__":
         stable_randn((model.lm_head.out_features, model.lm_head.in_features), False)
     )
     set_determinism(42)
-    devices = ['cpu', 'cuda:0'] if torch.cuda.is_available() else ['cpu']
+    devices = ["cpu", "cuda:0"] if torch.cuda.is_available() else ["cpu"]
     run_reproducible_demonstration(model=model, devices=devices)
