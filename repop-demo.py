@@ -4,31 +4,10 @@ from transformers import AutoModelForCausalLM
 from repop.utils import set_determinism, get_hash, hash_tensors
 from repop.rand import stable_randn
 import warnings
-import subprocess
 
 EXPECTED_OUTPUT_HASH = (
     "04c6980d863a3ccf2ef12e182a9dfe388533157c697687f8e8f0e8640080018c"
 )
-
-def check_nvidia():
-    """
-    Check if an NVIDIA GPU is available by attempting to run `nvidia-smi`.
-    
-    Returns:
-        (bool, str): A tuple where the first element is True if NVIDIA is available,
-                     and the second element is the output or error message.
-    """
-    try:
-        # Run nvidia-smi and capture its output
-        output = subprocess.check_output(["nvidia-smi"], stderr=subprocess.STDOUT)
-        return True, output.decode("utf-8")
-    except subprocess.CalledProcessError as e:
-        # nvidia-smi was found but returned an error
-        return False, f"Command error: {e.output.decode('utf-8')}"
-    except FileNotFoundError:
-        # nvidia-smi command is not found
-        return False, "nvidia-smi command not found. NVIDIA GPU might not be installed."
-
 
 def get_learnable_parameters(model: torch.nn.Module) -> set[str]:
     """
@@ -110,7 +89,7 @@ def run_reproducible_demonstration(model: torch.nn.Module, devices: list[str]):
 
         if repop_output_hash == EXPECTED_OUTPUT_HASH:
             print("\033[32mBitwise output match - success!\033[0m")
-            
+
 
 if __name__ == "__main__":
     # initialized weights are random (for pretrained: just the classifier layers)
@@ -128,7 +107,5 @@ if __name__ == "__main__":
         stable_randn((model.lm_head.out_features, model.lm_head.in_features), False)
     )
     set_determinism(42)
-    is_gpu_detected, message = check_nvidia()
-    print(message)
-    devices = ['cpu', 'cuda:0'] if is_gpu_detected else ['cpu']
+    devices = ['cpu', 'cuda:0'] if torch.cuda.is_available() else ['cpu']
     run_reproducible_demonstration(model=model, devices=devices)
