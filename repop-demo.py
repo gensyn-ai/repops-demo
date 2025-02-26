@@ -128,5 +128,7 @@ if __name__ == "__main__":
         stable_randn((model.lm_head.out_features, model.lm_head.in_features), False)
     )
     set_determinism(42)
-    devices = ['cpu', 'cuda:0'] if check_nvidia() else ['cpu']
+    is_gpu_detected, message = check_nvidia()
+    print(message)
+    devices = ['cpu', 'cuda:0'] if is_gpu_detected else ['cpu']
     run_reproducible_demonstration(model=model, devices=devices)
