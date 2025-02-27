@@ -23,7 +23,9 @@ def get_learnable_parameters(model: torch.nn.Module) -> set[str]:
 
 
 def run_reproducible_demonstration(model: torch.nn.Module, devices: list[str]):
-    # step 1: export the model to onnx
+    #
+    # Step 1: export the model to onnx
+    #
     shape = (2, 8)
     vocab_size = model.config.vocab_size
 
@@ -57,7 +59,9 @@ def run_reproducible_demonstration(model: torch.nn.Module, devices: list[str]):
         )
 
     print("Converting ONNX model to reproducible version...")
-    # step 2: deserialize the onnx model into a reproducible version
+    #
+    # Step 2: deserialize the onnx model into a reproducible version
+    #
     repop_model = gensyn_onnx2torch.convert(
         exported,
         attach_onnx_mapping=True,
@@ -65,8 +69,10 @@ def run_reproducible_demonstration(model: torch.nn.Module, devices: list[str]):
         requires_reproducibility=True,
     )
 
-    # step 3: run an inference forward pass of the reproducible model and
+    #
+    # Step 3: run an inference forward pass of the reproducible model and
     # present the hash of the output for demonstration purposes.
+    #
     model_hash = get_hash(repop_model)
     print("\033[35mRepOps Model Hash:\033[0m")
     print(f"\033[1;37m{model_hash}\033[0m")
