@@ -1,32 +1,27 @@
 # repops-demo
 
-## RepOps Summary
-Imagine a world where your deep learning experiments deliver bit-for-bit identical results—no matter the hardware, no matter the run. RepOps is the specialized library that makes this a reality. Designed to facilitate deterministic, reproducible outcomes, RepOps eliminates the chaos of hardware-induced variability in training and inference. For technical minds obsessed with trustless verification, control, consistency, and verifiable systems, RepOps isn’t just a tool — it’s the foundation for next-level ML reliability across CPUs, GPUs, and beyond for training and inference tasks.
+## RepOps
+Reproducible Operators (RepOps) is a library that ensures bitwise reproducibility of ML operations across different hardware. It solves the “nondeterminism” issue, where ML programs will often produce different outputs if they are executed on different devices. It works by controlling the order of floating point operations performed on all hardware, such that outputs will be bitwise identical, regardless of the device. This unlocks various use cases, including ML verification among untrusted nodes, reproducibility within academic research, and more.
 
 ## Prerequisites
 * Disk space upto 20GB
 * Docker (verify with `docker run hello-world`)
 * An Nvidia GPU (optional, but preferred, with CC 7.0-9.0). Drivers should support Cuda 12.6 at minimum (560.28.03)
 
-## Unleashing the Demo: From Hugging Face to Hardware Harmony
-This isn’t just a demo—it’s a front-row seat to the future of ML pipelines. We’ll take a Hugging Face model, lower it to RepOps, courtesy of the Gensyn workflow. After model conversion, the demo will execute inference on your hardware — starting with your CPU and flexing to an Nvidia GPU if you’ve got one handy. The payoff? A hashed output tensor that’s guaranteed to match, bit-for-bit, across any compatible hardware you throw at it. Different hardware, same model, same inputs, same hash—every time. It’s the bedrock of Gensyn’s verification system, ensuring trust and repeatability in distributed ML workloads.
-
-Ready to see it in action? Here’s how to fire up inference with the CausalLM variant of Llama 3.2-1B-Instruct:
-
-All you have to do is run: `sh run_docker_image.sh`
-
-Experiment with different CPUs or GPUs. The hash won’t flinch. That’s the RepOps promise — determinism you can bank on, building for trustless verifiable distributed ML.
-
-## Known Targets Supported by the Demo
-We support a variety of hardware targets including CPUs and Nvidia GPUs (CC 7.5+) for the demo. This list includes:
+## Formally supported targets
+We formally support a variety of hardware targets including CPUs and Nvidia GPUs (CC 7.5+) for the demo. This list includes:
 * x86_64
 * arm64
 * T4
 * V100
 * A100
 * RTX 3090
-* H100
-* H200
+
+## Instructions
+
+Run:
+
+ `sh run_docker_image.sh`
 
 ## Cleanup
 Once you are done with the demo, feel free to delete the llama-volume with `docker volume rm llama-volume`
