@@ -24,7 +24,6 @@ We support a variety of hardware targets including CPUs and Nvidia GPUs (CC 7.5+
 * T4
 * V100
 * A100
-* RTX 4090
 * RTX 3090
 * H100
 * H200
