@@ -13,9 +13,7 @@ This isn’t just a demo—it’s a front-row seat to the future of ML pipelines
 
 Ready to see it in action? Here’s how to fire up inference with the CausalLM variant of Llama 3.2-1B-Instruct:
 
-Kick things off with: `sh run_docker_image.sh`
-
-Once docker is set up and inside the docker: `./download-llama.sh && python ./repops-demo.py`
+All you have to do is run: `sh run_docker_image.sh`
 
 Experiment with different CPUs or GPUs. The hash won’t flinch. That’s the RepOps promise — determinism you can bank on, building for trustless verifiable distributed ML.
 

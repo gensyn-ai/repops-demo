@@ -9,8 +9,12 @@ else
     GPU_FLAG=""
 fi
 
+# We run as non-root inside the container, so using a named volume rather
+# than a mountpoint to download llama. To remove just run
+# `docker volume rm llama-volume`
 docker run --rm $GPU_FLAG -it --pull always \
-  -v "$(pwd)/Llama-3.2-1B-Instruct:/home/gensyn/repop_demo/Llama-3.2-1B-Instruct" \
+  -v "llama-volume:/home/gensyn/repop_demo/Llama-3.2-1B-Instruct" \
+  -v "$(pwd)/execute.sh":/home/gensyn/repop_demo/execute.sh \
   -v "$(pwd)/repops-demo.py":/home/gensyn/repop_demo/repops-demo.py \
   -v "$(pwd)/download-llama.sh":/home/gensyn/repop_demo/download-llama.sh \
-  europe-docker.pkg.dev/gensyn-public-b7d9/public/repop-demo:v0.0.1 bash
+  europe-docker.pkg.dev/gensyn-public-b7d9/public/repop-demo:v0.0.1 ./execute.sh
