@@ -12,6 +12,9 @@ We formally support the following hardware targets, including CPUs and Nvidia GP
 * x86_64
 * arm64
 * T4
+* L4
+* L40
+* A40
 * V100
 * A100
 * H100
