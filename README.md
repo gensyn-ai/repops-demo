@@ -27,3 +27,6 @@ We support a variety of hardware targets including CPUs and Nvidia GPUs (CC 7.5+
 * RTX 3090
 * H100
 * H200
+
+## Cleanup
+Once you are done with the demo, feel free to delete the llama-volume with `docker volume rm llama-volume`
