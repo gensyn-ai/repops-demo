@@ -10,6 +10,7 @@ else
 fi
 
 docker run --rm $GPU_FLAG -it --pull always \
+  -v "$(pwd)/Llama-3.2-1B-Instruct:/home/gensyn/repop_demo/Llama-3.2-1B-Instruct" \
   -v "$(pwd)/repops-demo.py":/home/gensyn/repop_demo/repops-demo.py \
   -v "$(pwd)/download-llama.sh":/home/gensyn/repop_demo/download-llama.sh \
-  briangen/repop-demo:latest bash
+  europe-docker.pkg.dev/gensyn-public-b7d9/public/repop-demo:v0.0.1 bash
