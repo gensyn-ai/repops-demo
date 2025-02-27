@@ -17,6 +17,7 @@ We formally support the following hardware targets, including CPUs and Nvidia GP
 * H100
 * H200
 * RTX 3090
+* RTX 4090
 
 ## Instructions
 
