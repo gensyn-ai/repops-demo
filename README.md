@@ -6,7 +6,7 @@ Imagine a world where your deep learning experiments deliver bit-for-bit identic
 ## Prerequisites
 * Disk space upto 20GB
 * Docker (verify with `docker run hello-world`)
-* An Nvidia GPU (optional, but preferred, with CC 7.5+)
+* An Nvidia GPU (optional, but preferred, with CC 7.0-9.0). Drivers should support Cuda 12.6 at minimum (560.28.03)
 
 ## Unleashing the Demo: From Hugging Face to Hardware Harmony
 This isn’t just a demo—it’s a front-row seat to the future of ML pipelines. We’ll take a Hugging Face model, lower it to RepOps, courtesy of the Gensyn workflow. After model conversion, the demo will execute inference on your hardware — starting with your CPU and flexing to an Nvidia GPU if you’ve got one handy. The payoff? A hashed output tensor that’s guaranteed to match, bit-for-bit, across any compatible hardware you throw at it. Different hardware, same model, same inputs, same hash—every time. It’s the bedrock of Gensyn’s verification system, ensuring trust and repeatability in distributed ML workloads.
@@ -22,6 +22,7 @@ We support a variety of hardware targets including CPUs and Nvidia GPUs (CC 7.5+
 * x86_64
 * arm64
 * T4
+* V100
 * A100
 * RTX 4090
 * RTX 3090
