@@ -4,7 +4,7 @@
 Imagine a world where your deep learning experiments deliver bit-for-bit identical results—no matter the hardware, no matter the run. RepOps is the specialized library that makes this a reality. Designed to facilitate deterministic, reproducible outcomes, RepOps eliminates the chaos of hardware-induced variability in training and inference. For technical minds obsessed with trustless verification, control, consistency, and verifiable systems, RepOps isn’t just a tool — it’s the foundation for next-level ML reliability across CPUs, GPUs, and beyond for training and inference tasks.
 
 ## Prerequisites
-* Disk space upto 100GB
+* Disk space upto 20GB
 * Docker (verify with `docker run hello-world`)
 * An Nvidia GPU (optional, but preferred, with CC 7.5+)
 
