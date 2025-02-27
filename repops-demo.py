@@ -68,7 +68,7 @@ def run_reproducible_demonstration(model: torch.nn.Module, devices: list[str]):
     # step 3: run an inference forward pass of the reproducible model and
     # present the hash of the output for demonstration purposes.
     model_hash = get_hash(repop_model)
-    print("\033[35mRepop Model Hash:\033[0m")
+    print("\033[35mRepOps Model Hash:\033[0m")
     print(f"\033[1;37m{model_hash}\033[0m")
 
     print("\033[35mInput Data Hash:\033[0m")
@@ -78,9 +78,9 @@ def run_reproducible_demonstration(model: torch.nn.Module, devices: list[str]):
     for device in devices:
         repop_model = repop_model.to(device)
         dummy_data = [d.to(device) for d in dummy_data]
-        print(f"Running Repop Model for device = {device} ... ")
+        print(f"Running RepOps Model for device = {device} ... ")
         repop_output = repop_model(*dummy_data)
-        print("\033[35mRepop Inference Output Hash:\033[0m")
+        print("\033[35mRepOps Inference Output Hash:\033[0m")
         repop_output_hash = get_hash(repop_output)
         print(f"\033[1;37m{repop_output_hash}\033[0m")
 
@@ -92,7 +92,7 @@ def run_reproducible_demonstration(model: torch.nn.Module, devices: list[str]):
 
 
 if __name__ == "__main__":
-    print("\033[35mRunning the Repop Demo!\033[0m")
+    print("\033[35mRunning the RepOps Demo!\033[0m")
     # initialized weights are random (for pretrained: just the classifier layers)
     set_determinism(22)
 
