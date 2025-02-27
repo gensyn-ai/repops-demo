@@ -78,7 +78,7 @@ def run_reproducible_demonstration(model: torch.nn.Module, devices: list[str]):
     for device in devices:
         repop_model = repop_model.to(device)
         dummy_data = [d.to(device) for d in dummy_data]
-        print(f"Running Repops Model for device = {device} ... ")
+        print(f"Running Repop Model for device = {device} ... ")
         repop_output = repop_model(*dummy_data)
         print("\033[35mRepop Inference Output Hash:\033[0m")
         repop_output_hash = get_hash(repop_output)
@@ -92,6 +92,7 @@ def run_reproducible_demonstration(model: torch.nn.Module, devices: list[str]):
 
 
 if __name__ == "__main__":
+    print("\033[35mRunning the Repop Demo!\033[0m")
     # initialized weights are random (for pretrained: just the classifier layers)
     set_determinism(22)
 
