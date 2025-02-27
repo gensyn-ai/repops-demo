@@ -5,8 +5,13 @@ RepOp is a specialized library designed to facilitate reproducible deep learning
 
 
 ## Running the Demo
+Notably, this demo will show the pipeline that Gensyn uses for taking a Huggingface Model and lowering it to RepOp.
+After the model is converted, the demo will then run inference on your target hardware CPU (and GPU if you have one installed).
+The result will show a hash of the output tensor showing a bit reproducible result. If you try the demo with a different GPU,
+you will end up getting the exact same result. The guarantee of RepOp to produce these results serves as the backbone of our 
+verification system.
+
 Below are some steps to run inference on a CausalLM flavor of Llama 3.2-1B-Instruct. 
-Notably, this demo will show the pipeline that Gensyn uses for taking a Huggingface Model and lowering to RepOp
 1. `sh run_docker_image.sh`
 2. `./download-llama.sh && python ./repop-demo.py`
 
